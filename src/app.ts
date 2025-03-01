@@ -7,7 +7,8 @@ import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
-// import router from './app/routes';
+import router from './app/routes';
+
 
 const app: Application = express();
 
@@ -19,7 +20,7 @@ app.use(cors());
 
 
 // application routes
-// app.use('/api/v1', router);  index.ts  theke asbe oi khabe route gula foreach kora ache
+app.use('/api/v1', router); // index.ts  theke asbe oi khabe route gula foreach kora ache
 // app.use(); comment kora thakbe
 
 // const test = (req: Request, res: Response) => {
