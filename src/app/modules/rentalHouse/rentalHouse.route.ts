@@ -8,7 +8,7 @@ const router =express.Router()
 // router.post('/create-product',StudentControllers.createStudent);
 router.post('/listings', RentalHouseControllers.createRentalHouse);
 router.get('/listings',RentalHouseControllers.getAllRentalHouse);
-// router.get('/:id', ProductControllers.getProductById);
+router.get('/listings/:id',RentalHouseControllers.getHouseById);
 // router.put('/:id', ProductControllers.updatedVProduct);
 // router.delete('/:id', ProductControllers.deleteProduct);
 

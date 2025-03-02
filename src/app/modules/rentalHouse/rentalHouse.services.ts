@@ -31,9 +31,13 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
 
   };
 
-
-
-
+  /** 🏠 Get rental house by ID */
+  const getRentalHouseById = async (id: string) => {
+    console.log('ami id',id);
+    const result = await rentalHouseModel.findById(id);
+  
+    return result;
+  };
 
 
 
@@ -46,5 +50,6 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
 
   export const RentalHouseServices = {
     createRentalHouseToDB,
-    getAllRentalHouse
+    getAllRentalHouse,
+    getRentalHouseById,
   };

@@ -3,6 +3,7 @@ import { RentalHouseServices } from "./rentalHouse.services";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 
 
 
@@ -40,7 +41,32 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
   });
 
 
+  const getHouseById = catchAsync(async (req: Request, res: Response, ) => {
+   
+    const houseId = req.params.id;
+    console.log(houseId);
+    const rentalHouse = await RentalHouseServices.getRentalHouseById(houseId);
+  
+    // iuf product is not found, return 404 error
+    if (! rentalHouse) {
+      throw new AppError(httpStatus.NOT_FOUND, 'This rental house is not found !');
+    }
+  
+    // Send successful response if product is found
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Rental house retrieved successfully',
+      data:rentalHouse,  // Ensure we return the correct 'product' (house)
+    });
+  });
+  
+
+
+
+
   export const RentalHouseControllers = {
     createRentalHouse,
-    getAllRentalHouse 
+    getAllRentalHouse ,
+    getHouseById ,
   };
