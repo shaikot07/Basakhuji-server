@@ -47,7 +47,32 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     console.log(houseId);
     const rentalHouse = await RentalHouseServices.getRentalHouseById(houseId);
   
-    // iuf product is not found, return 404 error
+    // iuf house is not found, return 404 error
+    if (! rentalHouse) {
+      throw new AppError(httpStatus.NOT_FOUND, 'This rental house is not found !');
+    }
+  
+    // Send successful response if house is found
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Rental house retrieved successfully',
+      data:rentalHouse,  // Ensure we return the correct  (house)
+    });
+  });
+
+  // for updated rental house by ID
+  const updatedHouseById = catchAsync(async (req: Request, res: Response, ) => {
+   
+    const houseId = req.params.id;
+    console.log(houseId);
+    const rentalHouseData = req.body;
+    const rentalHouse = await RentalHouseServices.updatedRentalHouseById(
+      houseId,
+      rentalHouseData,
+    )
+  
+    // iuf rentalhouse is not found, return 404 error
     if (! rentalHouse) {
       throw new AppError(httpStatus.NOT_FOUND, 'This rental house is not found !');
     }
@@ -69,4 +94,5 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     createRentalHouse,
     getAllRentalHouse ,
     getHouseById ,
+    updatedHouseById
   };

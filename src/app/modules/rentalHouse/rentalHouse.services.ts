@@ -38,8 +38,13 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   
     return result;
   };
-
-
+/** 🏠 updated rental house by ID */
+  const updatedRentalHouseById = async (id: string, rentalHouseData: Partial<IRentalHouse>) => {
+    const result = await rentalHouseModel.findByIdAndUpdate(id, rentalHouseData, {
+      new: true,
+    });
+    return result;
+  };
 
 
 
@@ -52,4 +57,5 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
     createRentalHouseToDB,
     getAllRentalHouse,
     getRentalHouseById,
+    updatedRentalHouseById,
   };

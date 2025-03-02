@@ -9,7 +9,7 @@ const router =express.Router()
 router.post('/listings', RentalHouseControllers.createRentalHouse);
 router.get('/listings',RentalHouseControllers.getAllRentalHouse);
 router.get('/listings/:id',RentalHouseControllers.getHouseById);
-// router.put('/:id', ProductControllers.updatedVProduct);
+router.put('/listings/:id',RentalHouseControllers.updatedHouseById);
 // router.delete('/:id', ProductControllers.deleteProduct);
 
 
