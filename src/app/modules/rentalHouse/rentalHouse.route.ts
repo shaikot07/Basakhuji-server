@@ -10,7 +10,7 @@ router.post('/listings', RentalHouseControllers.createRentalHouse);
 router.get('/listings',RentalHouseControllers.getAllRentalHouse);
 router.get('/listings/:id',RentalHouseControllers.getHouseById);
 router.put('/listings/:id',RentalHouseControllers.updatedHouseById);
-// router.delete('/:id', ProductControllers.deleteProduct);
+router.delete('/listings/:id', RentalHouseControllers.deletedRentalHouseById);
 
 
 

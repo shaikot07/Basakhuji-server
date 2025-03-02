@@ -47,7 +47,11 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   };
 
 
-
+  const deletedRentalHouse = async (id: string) => {
+    const result = await rentalHouseModel.findByIdAndDelete(id);
+    return result;
+  };
+  
 
 
 
@@ -58,4 +62,5 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
     getAllRentalHouse,
     getRentalHouseById,
     updatedRentalHouseById,
+    deletedRentalHouse,
   };

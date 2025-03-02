@@ -81,12 +81,34 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Rental house retrieved successfully',
+      message: 'Rental house info updated successfully',
       data:rentalHouse,  // Ensure we return the correct 'product' (house)
     });
   });
   
-
+  const deletedRentalHouseById = catchAsync(async (req: Request, res: Response) => {
+    const houseId = req.params.id;
+  
+    // Call the service method to delete the rental house by its ID
+    const deletedHouse = await RentalHouseServices.deletedRentalHouse(houseId);
+  
+    if (!deletedHouse) {
+      return sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: 'Rental house not found',
+        data: null,
+      });
+    }
+  
+    // If successful, return a success response
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Rental house deleted successfully!',
+      data: null,  // No data to return since it's a delete operation
+    });
+  });
 
 
 
@@ -94,5 +116,6 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     createRentalHouse,
     getAllRentalHouse ,
     getHouseById ,
-    updatedHouseById
+    updatedHouseById,
+    deletedRentalHouseById,
   };
