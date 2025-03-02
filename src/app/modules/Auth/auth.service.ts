@@ -21,6 +21,8 @@ const registerUser = async (payload: TUser) => {
     .exec();
   return result;
 };
+
+
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
   const user = await User.findOne({ email: payload.email });

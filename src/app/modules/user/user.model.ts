@@ -5,11 +5,11 @@ import config from '../../config';
 
 const userSchema = new Schema<TUser, UserModel>(
   {
-    
-    name: { type: String, required: true, trim: true },
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
+    phone: { type: String }, // Changed from number to string
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'customer'], default: 'customer' },
+    role: { type: String, enum: ["admin", "landlord", "tenant"], default: "tenant" },
     isBlocked: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
     passwordChangedAt: { type: Date },
