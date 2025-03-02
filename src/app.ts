@@ -9,18 +9,18 @@ import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
 
-
 const app: Application = express();
 
 //parsers
 app.use(express.json());
 app.use(cookieParser());
-// app.use(cors({ origin: ['http://localhost:5173'] }));
-app.use(cors());
+// app.use(cors({ origin: ['http://localhost:5173'], credentials: true, }))
+app.use(cors({ origin: ['https://bike-house-l2-as4.netlify.app'], credentials: true, }))
+// app.use(cors());
 
 
 // application routes
-app.use('/api/v1', router); // index.ts  theke asbe oi khabe route gula foreach kora ache
+app.use('/api', router);  //index.ts  theke asbe oi khabe route gula foreach kora ache
 // app.use(); comment kora thakbe
 
 // const test = (req: Request, res: Response) => {
