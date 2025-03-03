@@ -1,6 +1,6 @@
 
 
-interface IRentalRequest {
+export interface IRentalRequest {
     rentalHouseId: string;
     tenantId: string;
     status: "pending" | "approved" | "rejected";

@@ -62,7 +62,7 @@ const loginUser = async (payload: TLoginUser) => {
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
   );
-  console.log("create token::",accessToken);
+  // console.log("create token::",accessToken);
 
   const refreshToken = createToken(
     jwtPayload,
