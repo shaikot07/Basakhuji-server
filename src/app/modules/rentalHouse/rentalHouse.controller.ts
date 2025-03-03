@@ -113,10 +113,14 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
 // -------------------- !Lanlod request approval handling--------------------------
 // update rental request status (approve or reject and add landlord phone number phone number patabe  client side theke)
 const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
-  const { requestId } = req.params;
+  const requestId = req.params.id;
   const { status, landlordPhoneNumber } = req.body;
+  const landlordId = req.user.id; // 🔹 Extract from authenticated user
+  console.log('ami lanload',landlordId);
 
-  const result = await RentalHouseServices.updateRentalRequestStatus(requestId, status, landlordPhoneNumber);
+  console.log("🔍 Authenticated Landlord ID:", landlordId);
+
+  const result = await RentalHouseServices.updateRentalRequestStatus(requestId, status, landlordPhoneNumber, landlordId);
 
   sendResponse(res, {
       statusCode: httpStatus.OK,
