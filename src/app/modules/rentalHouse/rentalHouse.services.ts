@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import QueryBuilder from "../../builder/QueryBuilder";
+import { RentalRequestModel } from "../RentalRequests/rentalRequest.model";
 import { ProductSearchableFields } from "./rentalHouse.constant";
 import { IRentalHouse } from "./rentalHouse.interface";
 import { rentalHouseModel } from "./rentalHouse.model";
@@ -53,7 +55,20 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   };
   
 
+  const updateRentalRequestStatus = async (requestId: string, status: "approved" | "rejected", landlordPhoneNumber?: string) => {
+    const updateData: any = { status };
+    if (status === "approved" && landlordPhoneNumber) {
+        updateData.landlordPhoneNumber = landlordPhoneNumber;
+    }
 
+    const result = await RentalRequestModel.findByIdAndUpdate(requestId, updateData, { new: true });
+    return result;
+};
+
+// const updatePaymentStatus = async (requestId: string, paymentStatus: "pending" | "paid") => {
+//     const result = await RentalRequestModel.findByIdAndUpdate(requestId, { paymentStatus }, { new: true });
+//     return result;
+// };
 
 
 
@@ -63,4 +78,7 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
     getRentalHouseById,
     updatedRentalHouseById,
     deletedRentalHouse,
+
+    // for the rental request handle by the landlord
+    updateRentalRequestStatus,
   };

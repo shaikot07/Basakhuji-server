@@ -110,7 +110,21 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     });
   });
 
+// -------------------- !Lanlod request approval handling--------------------------
+// update rental request status (approve or reject and add landlord phone number phone number patabe  client side theke)
+const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
+  const { requestId } = req.params;
+  const { status, landlordPhoneNumber } = req.body;
 
+  const result = await RentalHouseServices.updateRentalRequestStatus(requestId, status, landlordPhoneNumber);
+
+  sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: `Rental request ${status} successfully`,
+      data: result,
+  });
+});
 
   export const RentalHouseControllers = {
     createRentalHouse,
@@ -118,4 +132,5 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     getHouseById ,
     updatedHouseById,
     deletedRentalHouseById,
+    updateRequestStatus
   };
