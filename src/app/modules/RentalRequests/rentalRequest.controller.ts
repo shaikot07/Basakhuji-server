@@ -1,8 +1,10 @@
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { RentalRequestServices } from "./rentalRequest.services";
+
 import { Request, Response } from "express";
+import { RentalRequestServices } from "./rentalRequest.services";
+
 
 
 
@@ -33,9 +35,43 @@ const getRentalRequest = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getRentalRequestsForLandlord = catchAsync(async (req: Request, res: Response) => {
+    const landlordId = req.user.userId;  // ✅ Get landlord ID from authenticated user
+    const  result = await RentalRequestServices.getRentalRequestsByLandlord(landlordId);
 
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Rental requests for Lanload Won have been successfully retrieved.",
+        data: result,
+    });
+});
+// -------------------- !Lanlod request approval handling--------------------------
+// update rental request status (approve or reject and add landlord phone number phone number patabe  client side theke)
+
+
+const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
+    console.log("checkuser", req.user.userId);
+    const requestId = req.params.id;
+    const { status, landlordPhoneNumber } = req.body;
+    const landlordId = req.user.userId;
+
+    console.log(" authenticated Landlord ID:", landlordId);
+
+    const result = await RentalRequestServices.updatedRentalRequestStatusByLanload(requestId, status, landlordPhoneNumber, landlordId);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: `Rental request ${status} successfully`,
+        data: result,
+    });
+});
 
 export const RentalRequestControllers = {
 createRentalRequest,
-getRentalRequest
+getRentalRequest,
+getRentalRequestsForLandlord,
+updateRequestStatus
+
   };

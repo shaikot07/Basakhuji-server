@@ -17,7 +17,7 @@ const registerUser = async (payload: TUser) => {
 
   const newUser = await User.create(payload)
   const result = await User.findById(newUser._id)
-    .select('-__v -createdAt -updatedAt -password -isBlocked -isDeleted -role') 
+    .select('-__v -createdAt -updatedAt -password -isBlocked -isDeleted ') 
     .exec();
   return result;
 };
