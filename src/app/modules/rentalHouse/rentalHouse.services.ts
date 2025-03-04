@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import httpStatus from "http-status";
 import QueryBuilder from "../../builder/QueryBuilder";
+import AppError from "../../errors/AppError";
 import { RentalRequestModel } from "../RentalRequests/rentalRequest.model";
 import { ProductSearchableFields } from "./rentalHouse.constant";
 import { IRentalHouse } from "./rentalHouse.interface";
@@ -62,21 +64,26 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
     landlordPhoneNumber?: string,
     landlordId?: string // 🔹 Get landlordId from authenticated user
 ) => {
-    console.log("🔍 Received request to update ID:", requestId);
-    console.log("🔍 Status to update:", status);
-    console.log("🔍 Landlord ID:", landlordId);
+    // console.log("🔍 Received request to update ID:", requestId);
+    // console.log("🔍 Status to update:", status);
+    // console.log("🔍 Landlord ID:", landlordId);
 
     // 1️⃣ Find the rental request first
     const rentalRequest = await RentalRequestModel.findById(requestId).populate<{ rentalHouseId: IRentalHouse }>("rentalHouseId");
     if (!rentalRequest) {
-        throw new Error("❌ Rental request not found!");
+      
+        throw new AppError(
+          httpStatus.NOT_FOUND, `${ landlordId} Rental request not found!`,
+        );
     }
 
     console.log("🔍 Found rental request:", rentalRequest);
 
     // 2️⃣ Check if the landlord is the owner of the rental house
     if (!rentalRequest.rentalHouseId || rentalRequest.rentalHouseId.landlordId.toString() !== landlordId) {
-        throw new Error("❌ You are not authorized to update this request.");
+        throw new AppError(
+          httpStatus.UNAUTHORIZED, `${ landlordId} You are not authorized to update this request.`,
+        );
     }
 
     // 3️⃣ Prepare update data
