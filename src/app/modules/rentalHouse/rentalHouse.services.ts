@@ -32,6 +32,17 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
     return  result
 
   };
+// ------------- lanload won house ----------------
+
+const getLandlordWonRentalHouses = async (landlordId: string) => {
+  
+    const result = await rentalHouseModel.find({landlordId })
+
+    return result;
+
+};
+
+
 
   /** 🏠 Get rental house by ID */
   const getRentalHouseById = async (id: string) => {
@@ -69,6 +80,7 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   export const RentalHouseServices = {
     createRentalHouseToDB,
     getAllRentalHouse,
+    getLandlordWonRentalHouses,
     getRentalHouseById,
     updatedRentalHouseById,
     deletedRentalHouse,
