@@ -7,6 +7,7 @@ const rentalHouseSchema = new Schema(
     description: { type: String, required: true },
     rentAmount: { type: Number, required: true },
     bedrooms: { type: Number, required: true },
+    bath: { type: Number, },
     images: [{ type: String, required: true }], // Array of image URLs
     landlordId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },

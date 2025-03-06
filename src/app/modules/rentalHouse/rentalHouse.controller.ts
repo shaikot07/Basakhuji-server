@@ -42,11 +42,11 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
 
   // get all rental house by landlord id
   const getLanloadWonRentalRequest = catchAsync(async (req: Request, res: Response) => {
-    const landlordId =  req.params.id;
-    console.log('lanload',landlordId,'params');
-    const test = req.user.userId;
-    console.log('lanload',test,'user');
-    const result = await RentalHouseServices.getLandlordWonRentalHouses(landlordId);
+    const requestId =  req.params.id;
+    console.log('re',requestId,'params');
+    const landlordId = req.user.userId;
+    console.log('lanload', landlordId,'user');
+    const result = await RentalHouseServices.getLandlordWonRentalHouses( requestId, landlordId,);
 
 
     sendResponse(res, {

@@ -36,16 +36,19 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   };
 // ------------- lanload won house ----------------
 
-const getLandlordWonRentalHouses = async (landlordId: string, ) => {
+const getLandlordWonRentalHouses = async (requestId: string, landlordId: string) => {
 
+  console.log("s-checkuser",landlordId);
+  console.log("s-request",requestId);
 
-  
-    const result = await rentalHouseModel.find({landlordId })
+  if (landlordId !== requestId) {
+    throw new AppError(httpStatus.FORBIDDEN, "Access denied: You are not authorized to view this data.");
+  }
 
-    return result;
+  const result = await rentalHouseModel.find({ landlordId });
 
+  return result;
 };
-
 
 
   /** 🏠 Get rental house by ID */
