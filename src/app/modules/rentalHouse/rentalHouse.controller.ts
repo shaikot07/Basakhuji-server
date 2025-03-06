@@ -40,6 +40,23 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     });
   });
 
+  // get all rental house by landlord id
+  const getLanloadWonRentalRequest = catchAsync(async (req: Request, res: Response) => {
+    const landlordId =  req.params.id;
+    console.log('lanload',landlordId,'params');
+    const test = req.user.userId;
+    console.log('lanload',test,'user');
+    const result = await RentalHouseServices.getLandlordWonRentalHouses(landlordId);
+
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "lanload won house retrieved successfully",
+        data: result,
+    });
+});
+
 
   const getHouseById = catchAsync(async (req: Request, res: Response, ) => {
    
@@ -114,6 +131,7 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
   export const RentalHouseControllers = {
     createRentalHouse,
     getAllRentalHouse ,
+    getLanloadWonRentalRequest,
     getHouseById ,
     updatedHouseById,
     deletedRentalHouseById,

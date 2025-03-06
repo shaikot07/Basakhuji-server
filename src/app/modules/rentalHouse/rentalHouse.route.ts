@@ -12,7 +12,7 @@ const router =express.Router()
 // router.post('/create-product',StudentControllers.createStudent);
 router.post('/listings', RentalHouseControllers.createRentalHouse);
 router.get('/listings',RentalHouseControllers.getAllRentalHouse);
-router.get('/listings',auth(USER_ROLE.landlord), RentalHouseControllers.getLanloadWonRentalRequest);
+router.get('/listings/:id',auth(USER_ROLE.landlord), RentalHouseControllers.getLanloadWonRentalRequest);
 router.get('/listings/:id',RentalHouseControllers.getHouseById);
 router.put('/listings/:id',RentalHouseControllers.updatedHouseById);
 router.delete('/listings/:id', RentalHouseControllers.deletedRentalHouseById);

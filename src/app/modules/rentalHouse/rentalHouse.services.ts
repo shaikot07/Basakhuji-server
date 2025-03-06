@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import httpStatus from "http-status";
 import QueryBuilder from "../../builder/QueryBuilder";
+import AppError from "../../errors/AppError";
 
 import { ProductSearchableFields } from "./rentalHouse.constant";
 import { IRentalHouse } from "./rentalHouse.interface";
@@ -34,7 +36,9 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   };
 // ------------- lanload won house ----------------
 
-const getLandlordWonRentalHouses = async (landlordId: string) => {
+const getLandlordWonRentalHouses = async (landlordId: string, ) => {
+
+
   
     const result = await rentalHouseModel.find({landlordId })
 
