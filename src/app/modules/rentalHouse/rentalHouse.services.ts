@@ -29,7 +29,7 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
   
     const result = await  rentalHouseQuery.modelQuery.exec();
     // const meta = await productQuery.countTotal();
-    console.log('Query Result:', result);
+    // console.log('Query Result:', result);
   
     return  result
 
@@ -38,8 +38,8 @@ const createRentalHouseToDB = async (rentalHouse: IRentalHouse) => {
 
 const getLandlordWonRentalHouses = async (requestId: string, landlordId: string) => {
 
-  console.log("s-checkuser",landlordId);
-  console.log("s-request",requestId);
+  // console.log("s-checkuser",landlordId);
+  // console.log("s-request",requestId);
 
   if (landlordId !== requestId) {
     throw new AppError(httpStatus.FORBIDDEN, "Access denied: You are not authorized to view this data.");
