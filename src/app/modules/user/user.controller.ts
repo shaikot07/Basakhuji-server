@@ -11,7 +11,7 @@ const blockUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'user blocked successfully!',
+    message: 'User blocked successfully!',
     data: '',
   });
 });
@@ -23,7 +23,7 @@ const getAllUser= catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'user  retrieved  successfully!',
+    message: 'User  retrieved  successfully!',
     data:result,
   });
 });
