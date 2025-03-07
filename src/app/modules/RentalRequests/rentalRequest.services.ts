@@ -38,11 +38,11 @@ const getRentalRequestsByLandlord = async (landlordId: string) => {
 
 const updatedRentalRequestStatusByLanload = async (requestId: string,status: "approved" | "rejected", landlordPhoneNumber?: string, landlordId?: string 
 ) => {
-    console.log("🔍 Received request to update ID from services:", requestId);
-    console.log("🔍 Status to update:  from services", status);
-    console.log("🔍 Landlord ID:  from services", landlordId);
+    console.log("request to update ID from services:", requestId);
+    console.log("to update:  from services", status);
+    console.log("  from services", landlordId);
 
-    // 1️⃣ Find the rental request first
+    // find the rental request first
     const rentalRequest = await RentalRequestModel.findById(requestId).populate<{ rentalHouseId: IRentalHouse }>("rentalHouseId");
     if (!rentalRequest) {
       
@@ -51,16 +51,16 @@ const updatedRentalRequestStatusByLanload = async (requestId: string,status: "ap
         );
     }
 
-    console.log("🔍 Found rental request:", rentalRequest);
+    console.log(" Found rental request:", rentalRequest);
 
-    // 2️⃣ Check if the landlord is the owner of the rental house
+    //  Check if the landlord is the owner of the rental house
     if (!rentalRequest.rentalHouseId || rentalRequest.rentalHouseId?.landlordId?.toString() !== landlordId) {
         throw new AppError(
           httpStatus.UNAUTHORIZED,` ${ landlordId} You are not authorized to update this request.`,
         );
     }
 
-    // 3️⃣ Prepare update data
+    // Prepare update data
     const updateData: any = { status };
     if (status === "approved" && landlordPhoneNumber) {
         updateData.landlordPhoneNumber = landlordPhoneNumber;

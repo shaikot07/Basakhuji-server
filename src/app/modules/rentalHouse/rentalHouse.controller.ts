@@ -10,6 +10,7 @@ import AppError from "../../errors/AppError";
 const createRentalHouse = async ( req: Request, res: Response,next: NextFunction,) => {
     try {
       const rentalHouse = req.body;
+      console.log('Received data:', rentalHouse);
       console.log("this is the contro",rentalHouse);
       const result = await RentalHouseServices.createRentalHouseToDB(rentalHouse);
       res.status(200).json({
