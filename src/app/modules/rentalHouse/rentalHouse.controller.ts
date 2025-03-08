@@ -10,8 +10,8 @@ import AppError from "../../errors/AppError";
 const createRentalHouse = async ( req: Request, res: Response,next: NextFunction,) => {
     try {
       const rentalHouse = req.body;
-      console.log('Received data:', rentalHouse);
-      console.log("this is the contro",rentalHouse);
+      // console.log('Received data:', rentalHouse);
+      // console.log("this is the contro",rentalHouse);
       const result = await RentalHouseServices.createRentalHouseToDB(rentalHouse);
       res.status(200).json({
         success: true,
@@ -30,7 +30,7 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
 
 
   const getAllRentalHouse  = catchAsync(async (req: Request,res: Response, ) => {
-    console.log('ami controller',req.query);
+    // console.log('ami controller',req.query);
     const result = await RentalHouseServices.getAllRentalHouse(req.query)
   
     sendResponse(res, {
@@ -44,9 +44,9 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
   // get all rental house by landlord id
   const getLanloadWonRentalRequest = catchAsync(async (req: Request, res: Response) => {
     const requestId =  req.params.id;
-    console.log('re',requestId,'params');
+    // console.log('re',requestId,'params');
     const landlordId = req.user.userId;
-    console.log('lanload', landlordId,'user');
+    // console.log('lanload', landlordId,'user');
     const result = await RentalHouseServices.getLandlordWonRentalHouses( requestId, landlordId,);
 
 
@@ -100,7 +100,7 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
       statusCode: httpStatus.OK,
       success: true,
       message: 'Rental house info updated successfully',
-      data:rentalHouse,  // Ensure we return the correct 'product' (house)
+      data:rentalHouse,  // Ensure we return the correct ' (house)
     });
   });
   

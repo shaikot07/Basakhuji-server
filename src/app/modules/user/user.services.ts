@@ -12,11 +12,11 @@ const blockUserByAdmin = async (id: string) => {
     throw new AppError(httpStatus.UNAUTHORIZED, 'you can not block admin ');
   }
 
-  if (user.isBlocked) {
-    throw new AppError(httpStatus.NOT_FOUND, 'user al ready block ');
-  }
+  // if (user.isBlocked) {
+  //   throw new AppError(httpStatus.NOT_FOUND, 'user al ready block ');
+  // }
 
-  user.isBlocked = true;
+  user.isBlocked = !user.isBlocked;
   const result = await user.save();
 
   return result;
