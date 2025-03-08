@@ -13,7 +13,7 @@ const userSchema = new Schema<TUser, UserModel>(
     isBlocked: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
     passwordChangedAt: { type: Date },
-    profileImg: { type: String }
+    profileImg: { type: String,default: " "  }
   },
   { timestamps: true }
 );
