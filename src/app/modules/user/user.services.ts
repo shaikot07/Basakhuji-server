@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { User } from './user.model';
+import { TUser } from './user.interface';
 
 const blockUserByAdmin = async (id: string) => {
   const user = await User.findById(id);
@@ -29,10 +30,15 @@ const blockUserByAdmin = async (id: string) => {
   return result;
 };
 
-
+/** 🏠 updated user role by ID */
+const updatedUserRoleById = async (id: string, role: string): Promise<TUser | null> => {
+  const result = await User.findByIdAndUpdate(id, { role }, { new: true });
+  return result;
+};
 
 
 export const userServices = {
     blockUserByAdmin,
-    getAllUserFromDb
+    getAllUserFromDb,
+    updatedUserRoleById
 };

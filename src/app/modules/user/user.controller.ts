@@ -29,7 +29,7 @@ const getAllUser= catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updatedHouseById = catchAsync(async (req: Request, res: Response, ) => {
+const updatedRollById = catchAsync(async (req: Request, res: Response, ) => {
    
   const userId = req.params.id;
   console.log(userId);
@@ -39,7 +39,7 @@ const updatedHouseById = catchAsync(async (req: Request, res: Response, ) => {
     updatedRoll,
   )
 
-  // iuf rentalhouse is not found, return 404 error
+
   if (!userRoll) {
     throw new AppError(httpStatus.NOT_FOUND, 'user not found');
   }
@@ -56,5 +56,6 @@ const updatedHouseById = catchAsync(async (req: Request, res: Response, ) => {
 
 export const userController = {
   blockUser,
-  getAllUser
+  getAllUser,
+  updatedRollById 
 };
