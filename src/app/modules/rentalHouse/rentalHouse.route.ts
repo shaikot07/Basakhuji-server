@@ -20,8 +20,8 @@ router.get('/listings/won/:id',auth(USER_ROLE.landlord), RentalHouseControllers.
 
 // -------- for handle request ----------------
 // update rental request status (approve or reject and add landlord phone number phone number patabe  client side theke)
-router.put('/requests/:id',auth(USER_ROLE.landlord),RentalRequestControllers.updateRequestStatus);
 router.get('/requests',auth(USER_ROLE.landlord),RentalRequestControllers.getRentalRequestsForLandlord);
+router.put('/requests/:id',auth(USER_ROLE.landlord),RentalRequestControllers.updateRequestStatus);
 
 
 

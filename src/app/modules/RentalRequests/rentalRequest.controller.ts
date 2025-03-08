@@ -63,7 +63,7 @@ const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: `Rental request ${status} successfully`,
+        message: `Rental request ${status} successfully test`,
         data: result,
     });
 });
