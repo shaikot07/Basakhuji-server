@@ -31,9 +31,13 @@ const getAllUser= catchAsync(async (req: Request, res: Response) => {
 
 const updatedRollById = catchAsync(async (req: Request, res: Response, ) => {
    
-  const userId = req.params.id;
-  console.log(userId);
+  const { userId } = req.params;
+  console.log('user is for updated',  userId);
   const updatedRoll = req.body;
+  console.log('re.body', updatedRoll);
+  if (!userId) {
+    throw new Error("User ID is missing from request");
+  }
   const userRoll = await userServices.updatedUserRoleById(
     userId,
     updatedRoll,
