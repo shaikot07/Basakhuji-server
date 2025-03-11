@@ -7,4 +7,6 @@ export interface IRentalRequest {
     landlordPhoneNumber?: string; // Only available if approved
     paymentStatus?: "pending" | "paid"; // Only relevant for approved requests
     additionalMessage?: string;
+    moveInDate: string;
+    rentalDuration: string;
 }
