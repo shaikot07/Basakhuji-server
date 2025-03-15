@@ -10,6 +10,8 @@ const rentalRequestSchema = new Schema(
         status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
         landlordPhoneNumber: { type: String },
         paymentStatus: { type: String, enum: ["pending", "paid"] },
+        moveInDate: { type: Date, required: true },  // Move-in date
+        rentalDuration: { type: String, required: true },
         additionalMessage: { type: String },
     },
     { timestamps: true }

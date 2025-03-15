@@ -10,7 +10,7 @@ const router =express.Router()
 // api ai route here 
 
 // router.post('/create-product',StudentControllers.createStudent);
-router.get('/listings',RentalHouseControllers.getAllRentalHouse);
+router.get('/getAll',RentalHouseControllers.getAllRentalHouse);
 router.get('/listings/:id',RentalHouseControllers.getHouseById);
 router.post('/listings', RentalHouseControllers.createRentalHouse);
 router.put('/listings/:id',RentalHouseControllers.updatedHouseById);
