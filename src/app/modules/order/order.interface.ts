@@ -5,8 +5,7 @@ export interface IOrder{
     user: mongoose.Types.ObjectId;
     email:string;
     // product:string;
-    product:mongoose.Types.ObjectId;
-    quantity:number;
+    rentalHouse:mongoose.Types.ObjectId;
     totalPrice:number;
     status: "Pending" | "Paid" | "Shipped" | "Completed" | "Cancelled" |"Shipped" |"Delivered"| "Canceled";
     transaction: {
