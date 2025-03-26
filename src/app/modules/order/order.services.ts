@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
-import { ProductModel } from '../products/product.model';
+// import { ProductModel } from '../products/product.model';
 import { OrderModel } from './order.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { orderUtils } from './order.utils';
 import { IOrder } from './order.interface';
+import { rentalHouseModel } from '../rentalHouse/rentalHouse.model';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createOrderInToDB = async (orderData: any, client_ip: string) => {
@@ -12,31 +13,20 @@ const createOrderInToDB = async (orderData: any, client_ip: string) => {
   session.startTransaction(); // Start a transaction
 
   try {
-    const { email, product, quantity, totalPrice } = orderData;
-    const productData = await ProductModel.findById(product).session(session);
+    const { email, rentalHouse,  rentAmount } = orderData;
+    const rentalHouseData = await rentalHouseModel.findById(rentalHouse).session(session);
 
-    if (!productData) {
+    if (!rentalHouseData) {
       throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
     }
 
-    // Check stock availability
-    if (productData.quantity < quantity) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Insufficient stock available');
-    }
 
     // Validate total price
-    const correctTotalPrice = productData.price * quantity;
-    if (totalPrice !== correctTotalPrice) {
-      throw new AppError(httpStatus.BAD_REQUEST, `Incorrect totalPrice. Expected: ${correctTotalPrice}`);
-    }
-
-    // Reduce stock
-    productData.quantity -= quantity;
-    if (productData.quantity === 0) productData.inStock = false;
-    await productData.save({ session });
+    const totalPrice = rentAmount;
+    await rentalHouseData.save({ session });
 
     // Create order in the order database
-    let order = new OrderModel({ email, product, quantity, totalPrice });
+    let order = new OrderModel({ email, rentalHouse,  totalPrice });
     await order.save({ session });
 
     // Payment integration
@@ -115,7 +105,7 @@ const verifyPayment = async (order_id: string) => {
 // get user spesick order
 const getUserOrdersFromDB = async (email: string) => {
   return await OrderModel.find({ email })
-    .populate('product', 'name price')
+    .populate('rentalHouse', 'rentAmount location')
     .sort({ createdAt: -1 });
 };
 
@@ -123,7 +113,7 @@ const getUserOrdersFromDB = async (email: string) => {
 
 const getAllOrdersFromDB = async () => {
   const result = await OrderModel.find()
-    .populate('product', 'name price')
+    .populate('rentalHouse', 'rentAmount location')
     .sort({ createdAt: -1 });
 
   if (!result || result.length === 0) {
@@ -135,8 +125,7 @@ const getAllOrdersFromDB = async () => {
 //  get a single order by ID
 const getOrderByIdFromDB = async (orderId: string) => {
   const order = await OrderModel.findById(orderId).populate(
-    'product',
-    'name price',
+    'rentalHouse', 'rentAmount location',
   );
   if (!order) throw new AppError(httpStatus.NOT_FOUND, 'Order not found');
 
@@ -161,13 +150,13 @@ const cancelOrderInDB = async (orderId: string, email: string) => {
     );
   }
 
-  // restore product stock
-  const productData = await ProductModel.findById(order.product);
-  if (productData) {
-    productData.quantity += order.quantity;
-    productData.inStock = true;
-    await productData.save();
-  }
+  // // restore product stock
+  // const productData = await ProductModel.findById(order.product);
+  // if (productData) {
+  //   productData.quantity += order.quantity;
+  //   productData.inStock = true;
+  //   await productData.save();
+  // }
 
   order.status = 'Canceled';
   await order.save();
