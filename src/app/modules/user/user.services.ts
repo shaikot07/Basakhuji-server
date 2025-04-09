@@ -55,9 +55,22 @@ const updatedUserRoleById = async (userId: string, updatedRoll: { role: string }
 };
 
 
+const updatedUserPersonalInfoById= async (userId: string, updatedUserData: { name: string; email: string; phone: string }): Promise<TUser | null> => {
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+ const result = await User.findByIdAndUpdate(userId, updatedUserData, {
+      new: true,
+    });
+    return result;
+
+}
 
 export const userServices = {
     blockUserByAdmin,
     getAllUserFromDb,
-    updatedUserRoleById
+    updatedUserRoleById,
+    updatedUserPersonalInfoById
 };

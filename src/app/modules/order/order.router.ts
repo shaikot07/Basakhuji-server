@@ -13,7 +13,8 @@ router.post('/create-order',OrderControllers.createOrder);
 // router.delete('/:orderId',auth(USER_ROLE.customer),OrderControllers.cancelOrder);
 router.get('/get-user-order',OrderControllers.getUserOrders);
 router.get('/get-all-orders',auth(USER_ROLE.admin),OrderControllers.getAllOrders);
-router.get('/verify-payment/:id',OrderControllers.verifyPayment);
+// router.get('/verify-payment/:id',OrderControllers.verifyPayment);
+router.get('/verify-payment',auth(USER_ROLE.tenant),OrderControllers.verifyPayment);
 router.get('/:id',OrderControllers.getOrderById);
 router.patch('/:orderId/status',auth(USER_ROLE.admin),OrderControllers.updateOrderStatus);
 
