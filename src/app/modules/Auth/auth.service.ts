@@ -55,6 +55,8 @@ const loginUser = async (payload: TLoginUser) => {
     role: user.role,
     email: user.email,
     name: user.name,
+    profileImg: user.profileImg,
+    // ...(user.profileImg && { profileImg: user.profileImg }),
   };
 
   const accessToken = createToken(
@@ -111,6 +113,7 @@ const refreshToken = async (token: string) => {
     userId: user._id.toString(),
     role: user.role,
     email: user.email,
+    ...(user.profileImg && { profileImg: user.profileImg }),
   };
 
   const accessToken = createToken(
