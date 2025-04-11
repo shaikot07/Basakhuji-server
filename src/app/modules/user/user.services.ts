@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { User } from './user.model';
 import { TUser } from './user.interface';
-import mongoose from 'mongoose';
+
 
 const blockUserByAdmin = async (id: string) => {
   const user = await User.findById(id);
@@ -55,7 +55,7 @@ const updatedUserRoleById = async (userId: string, updatedRoll: { role: string }
 };
 
 
-const updatedUserPersonalInfoById= async (userId: string, updatedUserData: { name: string; email: string; phone: string }): Promise<TUser | null> => {
+const updatedUserPersonalInfoById= async (userId: string, updatedUserData: { name: string; role: string; profileImg: string }): Promise<TUser | null> => {
 
   const user = await User.findById(userId);
   if (!user) {
@@ -68,9 +68,20 @@ const updatedUserPersonalInfoById= async (userId: string, updatedUserData: { nam
 
 }
 
+const getUserById=async(userId:string):Promise<TUser | null>=>{
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+  return user;
+}
+
+
+
 export const userServices = {
     blockUserByAdmin,
     getAllUserFromDb,
     updatedUserRoleById,
-    updatedUserPersonalInfoById
+    updatedUserPersonalInfoById,
+    getUserById
 };

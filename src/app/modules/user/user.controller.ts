@@ -77,7 +77,18 @@ const updatedUserPersonalInfoById = catchAsync(async(req: Request, res: Response
 
 
 
+const getsingleUserById= catchAsync(async (req: Request, res: Response) => {
+  const userId = req.params.userId; 
+ 
+  const result= await userServices.getUserById(userId);
 
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'single User retrieved successfully!',
+    data:result,
+  });
+});
 
 
 
@@ -85,5 +96,6 @@ export const userController = {
   blockUser,
   getAllUser,
   updatedRollById,
-  updatedUserPersonalInfoById
+  updatedUserPersonalInfoById,
+  getsingleUserById
 };
