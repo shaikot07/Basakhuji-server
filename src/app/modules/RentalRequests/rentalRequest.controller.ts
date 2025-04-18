@@ -42,7 +42,7 @@ const getRentalRequestsForLandlord = catchAsync(async (req: Request, res: Respon
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Rental requests for Lanload Won have been successfully retrieved.",
+        message: "Rental requests for Landlord Won have been successfully retrieved.",
         data: result,
     });
 });
@@ -51,12 +51,12 @@ const getRentalRequestsForLandlord = catchAsync(async (req: Request, res: Respon
 
 
 const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
-    console.log("checkuser", req.user.userId);
+    // console.log("checkuser", req.user.userId);
     const requestId = req.params.id;
     const { status, landlordPhoneNumber } = req.body;
     const landlordId = req.user.userId;
 
-    console.log(" authenticated Landlord ID:", landlordId);
+    // console.log(" authenticated Landlord ID:", landlordId);
 
     const result = await RentalRequestServices.updatedRentalRequestStatusByLanload(requestId, status, landlordPhoneNumber, landlordId);
 
