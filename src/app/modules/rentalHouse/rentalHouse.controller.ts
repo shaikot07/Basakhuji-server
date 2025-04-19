@@ -83,7 +83,7 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
   const updatedHouseById = catchAsync(async (req: Request, res: Response, ) => {
    
     const houseId = req.params.id;
-    console.log(houseId);
+    // console.log(houseId);
     const rentalHouseData = req.body;
     const rentalHouse = await RentalHouseServices.updatedRentalHouseById(
       houseId,

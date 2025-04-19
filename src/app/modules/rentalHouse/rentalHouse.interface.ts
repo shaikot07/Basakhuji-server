@@ -5,7 +5,7 @@ export interface IRentalHouse {
     description: string;
     rentAmount: number;
     bedrooms: number;
-    amenities: string;
+    amenities?: string; // Optional field for amenities
     images: string[];
     bath?: number;
     landlordId: string; // References User
