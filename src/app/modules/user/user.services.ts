@@ -76,6 +76,33 @@ const getUserById=async(userId:string):Promise<TUser | null>=>{
   return user;
 }
 
+import bcrypt from 'bcrypt';
+import config from '../../config';
+
+const changedPasswordById = async (
+  userId: string,
+  updatedPassword: { password: string }
+): Promise<TUser | null> => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  // 1. Hash the new password manually
+  const hashedPassword = await bcrypt.hash(
+    updatedPassword.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  // 2. Update the user with hashed password
+  const result = await User.findByIdAndUpdate(
+    userId,
+    { password: hashedPassword, passwordChangedAt: new Date() }, // also updating passwordChangedAt
+    { new: true }
+  );
+
+  return result;
+};
 
 
 export const userServices = {
@@ -83,5 +110,6 @@ export const userServices = {
     getAllUserFromDb,
     updatedUserRoleById,
     updatedUserPersonalInfoById,
-    getUserById
+    getUserById,
+    changedPasswordById
 };

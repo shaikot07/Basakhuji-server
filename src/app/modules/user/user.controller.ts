@@ -90,6 +90,21 @@ const getsingleUserById= catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const changePasswordByUserId = catchAsync(async(req: Request, res: Response) => {
+  const userId = req.params.userId; 
+  console.log(userId ,'for updated user id');
+  const updatedPassword = req.body;
+
+  const updatedUser = await userServices.changedPasswordById(userId, updatedPassword);
+
+// Send successful response if user info updated successfully
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User info updated successfully',
+      data:updatedUser,  // Ensure we return the correct ' (house)
+    });
+})
 
 
 export const userController = {
@@ -97,5 +112,6 @@ export const userController = {
   getAllUser,
   updatedRollById,
   updatedUserPersonalInfoById,
-  getsingleUserById
+  getsingleUserById,
+  changePasswordByUserId
 };
