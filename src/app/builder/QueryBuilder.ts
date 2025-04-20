@@ -107,6 +107,7 @@ filter() {
       if (typeof value === 'string') {
         if (value.toLowerCase() === 'rentAmount') {
           filters['rentAmount'] = true; // Handle ` rentAmount filter db te thakte hbe
+
         } else {
           filters['bedrooms'] = value; // hondle bedrooms filter
         }

@@ -14,8 +14,8 @@ const app: Application = express();
 //parsers
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:3000'], credentials: true, }))
-// app.use(cors({ origin: ['https://bike-house-l2-as4.netlify.app'], credentials: true, }))
+// app.use(cors({ origin: ['http://localhost:3000'], credentials: true, }))
+app.use(cors({ origin: ['https://basa-khuji-next-client.vercel.app'], credentials: true, }))
 // app.use(cors());
 
 
