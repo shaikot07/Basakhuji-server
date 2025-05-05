@@ -15,6 +15,7 @@ router.get('/requests/:id', RentalRequestControllers.getRentalRequest);
 // router.put('/requests/:id',RentalHouseControllers.updatedHouseById);
 // router.delete('/requests/:id', RentalHouseControllers.deletedRentalHouseById);
 // -----------------------------------
+router.get("/tenant-summary/:id", RentalRequestControllers.getRentalRequestSummary);
 
 
 export const RentalRequestRoutes= router;

@@ -134,6 +134,18 @@ const getRevenueData = async (req: Request, res: Response,next:NextFunction) => 
     next(error)
   }
 };
+// -------------for tent chart ------------------
+const getTenantOrderSummary = catchAsync(async (req: Request, res: Response) => {
+  const email = req.params.email;
+  const data = await OrderServices.getTenantOrderSummary(email);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Tenant order summary fetched",
+    data
+  });
+});
 
 export const OrderControllers = {
   createOrder,
@@ -144,4 +156,5 @@ export const OrderControllers = {
   cancelOrder,
   updateOrderStatus,
   getRevenueData,
+  getTenantOrderSummary
 };

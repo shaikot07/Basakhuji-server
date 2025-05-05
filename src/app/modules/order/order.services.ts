@@ -200,6 +200,38 @@ const calculateRevenue = async () => {
   return result[0]?.totalRevenue || 0;
 };
 
+// -------------for tent chart------------------
+const getTenantOrderSummary = async (email: string) => {
+  const summary = await OrderModel.aggregate([
+    {
+      $match: { email }
+    },
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 }
+      }
+    }
+  ]);
+
+  const result = {
+    Paid: 0,
+    Pending: 0,
+    Canceled: 0,
+    Completed: 0,
+    Delivered: 0,
+    total: 0
+  };
+
+  summary.forEach(item => {
+    const status = item._id as keyof typeof result;
+    result[status] = item.count;
+    result.total += item.count;
+  });
+
+  return result;
+};
+
 
 
 
@@ -216,4 +248,5 @@ export const OrderServices = {
   cancelOrderInDB,
   updateOrderStatusInDB,
   calculateRevenue,
+  getTenantOrderSummary
 };

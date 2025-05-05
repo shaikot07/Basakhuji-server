@@ -217,14 +217,52 @@ const updatedRentalRequestStatusByLanload = async (requestId: string, status: "a
 
     return result;
 };
+// -----------for chat   getMonthlyRentalRequestStatsByTenant-------------------
+import mongoose from "mongoose";
 
+const getRentalRequestSummaryByTenant = async (tenantId: string) => {
+  console.log("test for summary", tenantId);
 
+  const result = await RentalRequestModel.aggregate([
+    {
+      $match: { tenantId: new mongoose.Types.ObjectId(tenantId) },
+    },
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  type StatusType = {
+    pending: number;
+    approved: number;
+    rejected: number;
+    total: number;
+  };
+
+  const summary: StatusType = {
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    total: 0,
+  };
+
+  result.forEach(item => {
+    summary[item._id as keyof Omit<StatusType, 'total'>] = item.count;
+    summary.total += item.count;
+  });
+
+  return summary;
+};
 
 export const RentalRequestServices = {
   
     createRentalRequestToDB,
     getRentalRequestsByTenant,
     getRentalRequestsByLandlord,
-    updatedRentalRequestStatusByLanload // 🔹 Export the new method
+    updatedRentalRequestStatusByLanload, // 🔹 Export the new method
+    getRentalRequestSummaryByTenant
     
   };

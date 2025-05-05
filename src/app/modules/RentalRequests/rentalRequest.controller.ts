@@ -67,11 +67,25 @@ const updateRequestStatus = catchAsync(async (req: Request, res: Response) => {
         data: result,
     });
 });
+// --------------------
+const getRentalRequestSummary = catchAsync(async (req: Request, res: Response) => {
+    const tenantId = req.params.id;
+  
+    const result = await RentalRequestServices.getRentalRequestSummaryByTenant(tenantId);
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Monthly rental request chart data retrieved successfully",
+      data: result,
+    });
+  });
 
 export const RentalRequestControllers = {
 createRentalRequest,
 getRentalRequest,
 getRentalRequestsForLandlord,
-updateRequestStatus
+updateRequestStatus,
+getRentalRequestSummary
 
   };
