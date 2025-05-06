@@ -127,7 +127,33 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
       data: null,  // No data to return since it's a delete operation
     });
   });
+// ------------for chart lanload side -------------------
+const getWeeklyRentalHouseStats = catchAsync(async (req: Request, res: Response) => {
+  const landlordId = req.params.id; // / from auth middleware
+  console.log(landlordId, "landlordId from controller for chart");
 
+  const result = await RentalHouseServices. getLandlordPostedRentalHouseStats(landlordId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Weekly posted rental house stats retrieved successfully",
+    data: result,
+  });
+});
+const    getTotalRentalPostsByLan = catchAsync(async (req: Request, res: Response) => {
+  const landlordId = req.params.id; // / from auth middleware
+  console.log(landlordId, "landlordId from controller for chart");
+
+  const result = await RentalHouseServices.getTotalRentalPostsByLandlord(landlordId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "all posted rental house stats retrieved successfully",
+    data: result,
+  });
+});
 
   export const RentalHouseControllers = {
     createRentalHouse,
@@ -136,5 +162,7 @@ const createRentalHouse = async ( req: Request, res: Response,next: NextFunction
     getHouseById ,
     updatedHouseById,
     deletedRentalHouseById,
+    getWeeklyRentalHouseStats,
+    getTotalRentalPostsByLan
  
   };

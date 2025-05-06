@@ -146,6 +146,17 @@ const getTenantOrderSummary = catchAsync(async (req: Request, res: Response) => 
     data
   });
 });
+const getLanloadOrderSummary = catchAsync(async (req: Request, res: Response) => {
+  const landlordId = req.params.id;
+  const data = await OrderServices.getOrderSummaryByLandlord(landlordId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Lanload order summary fetched",
+    data
+  });
+});
 
 export const OrderControllers = {
   createOrder,
@@ -156,5 +167,6 @@ export const OrderControllers = {
   cancelOrder,
   updateOrderStatus,
   getRevenueData,
-  getTenantOrderSummary
+  getTenantOrderSummary,
+  getLanloadOrderSummary
 };
