@@ -16,6 +16,8 @@ router.get('/requests/:id', RentalRequestControllers.getRentalRequest);
 // router.delete('/requests/:id', RentalHouseControllers.deletedRentalHouseById);
 // -----------------------------------
 router.get("/tenant-summary/:id", RentalRequestControllers.getRentalRequestSummary);
+// router.get("/lanload-summary/:id", RentalRequestControllers.getRentalRequestSummaryByLanload);
+router.get( "/rental-request/summary/admin", RentalRequestControllers.getAllRentalRequestSummaryForAdmin);
 
 
 export const RentalRequestRoutes= router;

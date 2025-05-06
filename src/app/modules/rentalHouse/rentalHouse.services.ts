@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import mongoose from 'mongoose';
 import httpStatus from "http-status";
 import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
@@ -72,10 +73,40 @@ const getLandlordWonRentalHouses = async (requestId: string, landlordId: string)
     return result;
   };
   
-  // ------------------------------
+  // ------------------------------ for chart lanload side -------------------
+  const  getLandlordPostedRentalHouseStats = async (landlordId: string) => {
+    const stats = await rentalHouseModel.aggregate([
+      { 
+        $match: { 
+          landlordId: new mongoose.Types.ObjectId(landlordId) 
+        } 
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },  // Group by year
+            month: { $month: "$createdAt" },  // Group by month
+          },
+          count: { $sum: 1 }  // Count number of documents in each month
+        },
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 }, // Sort by year and month
+      },
+    ]);
+  
+    console.log("Aggregated stats by month:", stats);
+    return stats;
+  };
 
-
-
+  // for chart lanload side
+  const getTotalRentalPostsByLandlord = async (landlordId: string) => {
+    // Fetch the total number of posts by the landlord
+    const totalPosts = await rentalHouseModel.countDocuments({ landlordId: new mongoose.Types.ObjectId(landlordId) });
+  
+    console.log("Total posts:", totalPosts); // For debugging purposes
+    return totalPosts;
+  };
 
 // const updatePaymentStatus = async (requestId: string, paymentStatus: "pending" | "paid") => {
 //     const result = await RentalRequestModel.findByIdAndUpdate(requestId, { paymentStatus }, { new: true });
@@ -91,6 +122,8 @@ const getLandlordWonRentalHouses = async (requestId: string, landlordId: string)
     getRentalHouseById,
     updatedRentalHouseById,
     deletedRentalHouse,
+    getLandlordPostedRentalHouseStats,
+    getTotalRentalPostsByLandlord
 
   
   };

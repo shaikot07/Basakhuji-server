@@ -21,6 +21,7 @@ router.patch('/:orderId/status',auth(USER_ROLE.admin),OrderControllers.updateOrd
 // router.get("/verify-payment-pro",auth(USER_ROLE.customer), OrderControllers.verifyPayment)
 // for tent chart 
 router.get("/tenant-order-summary/:email",OrderControllers.getTenantOrderSummary);
+router.get("/lanload-order-summary/:id",OrderControllers.getLanloadOrderSummary);
 
 
 export const OrderRoutes= router;

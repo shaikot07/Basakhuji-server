@@ -22,7 +22,9 @@ router.get('/listings/won/:id',auth(USER_ROLE.landlord), RentalHouseControllers.
 // update rental request status (approve or reject and add landlord phone number phone number patabe  client side theke)
 router.get('/requests',auth(USER_ROLE.landlord),RentalRequestControllers.getRentalRequestsForLandlord);
 router.put('/requests/:id',auth(USER_ROLE.landlord),RentalRequestControllers.updateRequestStatus);
-
-
+// -----------for chart-------
+router.get("/weekly-stats/:id", RentalHouseControllers.getWeeklyRentalHouseStats);
+router.get('/listings/all/:id', RentalHouseControllers. getTotalRentalPostsByLan);
+router.get("/lanload-summary/:id", RentalRequestControllers.getRentalRequestSummaryByLanload);
 
 export const RentalHouseRoutes= router;

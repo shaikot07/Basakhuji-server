@@ -37,51 +37,6 @@ const getRentalRequestsByLandlord = async (landlordId: string) => {
 
 
 
-// const updatedRentalRequestStatusByLanload = async (requestId: string,status: "approved" | "rejected", landlordPhoneNumber?: string, landlordId?: string 
-// ) => {
-//     console.log("request to update ID from services:", requestId);
-//     console.log("to update:  from services", status);
-//     console.log("  from services", landlordId);
-
-//     // find the rental request first
-//     const rentalRequest = await RentalRequestModel.findById(requestId).populate<{ rentalHouseId: IRentalHouse }>("rentalHouseId");
-//     if (!rentalRequest) {
-      
-//         throw new AppError(
-//           httpStatus.NOT_FOUND,`${ landlordId} Rental request not found!` ,
-//         );
-//     }
-
-//     console.log(" Found rental request:", rentalRequest);
-
-//     //  Check if the landlord is the owner of the rental house
-//     if (!rentalRequest.rentalHouseId || rentalRequest.rentalHouseId?.landlordId?.toString() !== landlordId) {
-//         throw new AppError(
-//           httpStatus.UNAUTHORIZED,` ${ landlordId} You are not authorized to update this request.`,
-//         );
-//     }
-
-//     // Prepare update data
-//     const updateData: any = { status };
-//     if (status === "approved" && landlordPhoneNumber) {
-//         updateData.landlordPhoneNumber = landlordPhoneNumber;
-//     }
-
-//     console.log("🔍 Data to be updated:", updateData);
-
-//     // 4️⃣ Perform the update
-//     const result = await RentalRequestModel.findByIdAndUpdate(requestId, updateData, {
-//         new: true,
-//         runValidators: true,
-//     });
-
-//     console.log("✅ Update result:", result);
-
-//     return result;
-// };
-
-
-
 // 1Update the rental request status by landlord
 // ----------with emaile notifyfor aprove or reject-------------------
 
@@ -257,12 +212,113 @@ const getRentalRequestSummaryByTenant = async (tenantId: string) => {
   return summary;
 };
 
+
+
+export const getRentalRequestSummaryByLanload = async (landlordId: string) => {
+  const result = await RentalRequestModel.aggregate([
+    // Lookup the rental house details
+    {
+      $lookup: {
+        from: "rentalhouses", // collection name in MongoDB (make sure it's lowercase and plural if that's how it's stored)
+        localField: "rentalHouseId",
+        foreignField: "_id",
+        as: "house",
+      },
+    },
+    // Flatten the "house" array
+    { $unwind: "$house" },
+
+    // Match by house.landlordId
+    {
+      $match: {
+        "house.landlordId": new mongoose.Types.ObjectId(landlordId),
+      },
+    },
+
+    // Group by request status
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  type StatusType = {
+    pending: number;
+    approved: number;
+    rejected: number;
+    total: number;
+  };
+
+  const summary: StatusType = {
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    total: 0,
+  };
+
+  result.forEach(({ _id, count }) => {
+    if (["pending", "approved", "rejected"].includes(_id)) {
+      summary[_id as keyof Omit<StatusType, "total">] = count;
+      summary.total += count;
+    }
+  });
+
+  return summary;
+};
+
+// for admin dashboard chart 
+
+export const getRentalRequestSummaryForAdmin = async () => {
+  const result = await RentalRequestModel.aggregate([
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  type StatusType = {
+    pending: number;
+    approved: number;
+    rejected: number;
+    total: number;
+  };
+
+  const summary: StatusType = {
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+    total: 0,
+  };
+
+  result.forEach(({ _id, count }) => {
+    if (["pending", "approved", "rejected"].includes(_id)) {
+      summary[_id as keyof Omit<StatusType, "total">] = count;
+      summary.total += count;
+    }
+  });
+
+  return summary;
+};
+
+
+
+
+
+
+
+
 export const RentalRequestServices = {
   
     createRentalRequestToDB,
     getRentalRequestsByTenant,
     getRentalRequestsByLandlord,
     updatedRentalRequestStatusByLanload, // 🔹 Export the new method
-    getRentalRequestSummaryByTenant
+    getRentalRequestSummaryByTenant,
+    getRentalRequestSummaryByLanload,
+    getRentalRequestSummaryForAdmin,
     
   };

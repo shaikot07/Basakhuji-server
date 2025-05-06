@@ -232,7 +232,53 @@ const getTenantOrderSummary = async (email: string) => {
   return result;
 };
 
+const getOrderSummaryByLandlord = async (landlordId: string) => {
+  const result = await OrderModel.aggregate([
+    {
+      $lookup: {
+        from: "rentalhouses", // make sure this matches your real collection name
+        localField: "rentalHouse",
+        foreignField: "_id",
+        as: "house",
+      },
+    },
+    { $unwind: "$house" }, // flatten the array
+    {
+      $match: {
+        "house.landlordId": new mongoose.Types.ObjectId(landlordId),
+      },
+    },
+    {
+      $group: {
+        _id: "$status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
 
+  type StatusType = {
+    pending: number;
+    paid: number;
+    failed: number;
+    total: number;
+  };
+
+  const summary: StatusType = {
+    pending: 0,
+    paid: 0,
+    failed: 0,
+    total: 0,
+  };
+
+  result.forEach(({ _id, count }) => {
+    if (["pending", "paid", "failed"].includes(_id.toLowerCase())) {
+      summary[_id.toLowerCase() as keyof Omit<StatusType, "total">] = count;
+      summary.total += count;
+    }
+  });
+
+  return summary;
+};
 
 
 
@@ -248,5 +294,6 @@ export const OrderServices = {
   cancelOrderInDB,
   updateOrderStatusInDB,
   calculateRevenue,
-  getTenantOrderSummary
+  getTenantOrderSummary,
+  getOrderSummaryByLandlord
 };

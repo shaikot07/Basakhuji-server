@@ -80,12 +80,38 @@ const getRentalRequestSummary = catchAsync(async (req: Request, res: Response) =
       data: result,
     });
   });
+const getRentalRequestSummaryByLanload = catchAsync(async (req: Request, res: Response) => {
+    const landlordId = req.params.id;
+  
+    const result = await RentalRequestServices.getRentalRequestSummaryByLanload(landlordId);
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: " chart data retrieved successfully",
+      data: result,
+    });
+  });
+const getAllRentalRequestSummaryForAdmin = catchAsync(async (req: Request, res: Response) => {
+ 
+
+    const result = await RentalRequestServices.getRentalRequestSummaryForAdmin();
+  
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Rental request summary retrieved successfully for admin",
+        data: result,
+      });
+  });
 
 export const RentalRequestControllers = {
 createRentalRequest,
 getRentalRequest,
 getRentalRequestsForLandlord,
 updateRequestStatus,
-getRentalRequestSummary
+getRentalRequestSummary,
+getRentalRequestSummaryByLanload,
+getAllRentalRequestSummaryForAdmin
 
   };
